@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HTML5 input </title>
+
+    <style>
+    	#mycanvas{ background:url(mouse.png) }
+    </style>
+
+    <script src="jquery.js"></script>
+	<script src="socketio.js"></script>
+    <script>
+ 
+ 	var socket = io();
+
+    function init() {
+      var touchzone = document.getElementById("mycanvas");
+      touchzone.addEventListener("touchmove", move, false);
+      touchzone.addEventListener("touchstart", start, false);
+      touchzone.addEventListener("click", click, false);
+      touchzone.addEventListener("dblclick", dblclick, false);
+    }
+ 
+    function move() {
+      var canvas = document.getElementById('mycanvas');
+      socket.emit("move", event);
+      //if(canvas.getContext) {
+        var ctx = canvas.getContext("2d");
+        ctx.fillRect(event.touches[0].pageX, event.touches[0].pageY, 5, 5);
+      //}
+    }
+
+    function start() {
+      socket.emit("start", event);
+    }
+
+    function click()
+    {
+    	socket.emit("click");
+    }
+
+    function dblclick()
+    {
+    	socket.emit("dblclick");
+    }
+
+    </script>
+ 
+  </head>
+  <body onload="init()">
+    <canvas id="mycanvas" style="position:fixed; width:100%; height:100%; top:0px;">
+      Canvas element not supported.
+    </canvas>
+  </body>
+</html>
